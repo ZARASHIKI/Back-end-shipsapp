@@ -37,8 +37,11 @@
         <button type="button" onclick="tujuan()">Submit</button>
     </form>
     <div>
-        <button type="button" onclick="addvendor()">
-            Add Vendors
+        <button type="button" onclick="addvendor_ppbli()">
+            Add Vendors PPLBI
+        </button>
+        <button type="button" onclick="addvendor_ilfa()">
+            Add Vendors ILFA
         </button>
         <button type="button" onclick="removevendor()">
             hapus Vendors
@@ -57,9 +60,21 @@
 
     <div id="result"></div>
     <script>
-        function addvendor() {
+        function addvendor_ppbli() {
             $.ajax({
-                url: "http://localhost:3000/pengiriman/import-json",
+                url: "http://localhost:3000/vendors/import_pplbi",
+                type: "POST",
+                data: {},
+                success: function (response) {
+                    if (response) {
+                        message = "success"
+                    }
+                }
+            })
+        }
+        function addvendor_ilfa() {
+            $.ajax({
+                url: "http://localhost:3000/vendors/import_ilfa",
                 type: "POST",
                 data: {},
                 success: function (response) {

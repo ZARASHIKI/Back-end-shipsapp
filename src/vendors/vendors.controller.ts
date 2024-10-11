@@ -32,9 +32,14 @@ export class VendorsController {
     return CreateVendorResponseDto.zodSchema.parse(vendor);
   }
 
-  @Post('import')
+  @Post('import_pplbi')
   async importFromJson(): Promise<void> {
-    const vendor = await this.vendorsService.importFromJsonFile('/../data-companies.json');
+    const vendor = await this.vendorsService.importFromJsonFile_pplbi('/../pplbi_member_data.json');
+    
+  }
+  @Post('import_ilfa')
+  async importFromJson_ilfa(): Promise<void> {
+    const vendor = await this.vendorsService.importFromJsonFile_ilfa('/../iilfa.json');
     
   }
   @Delete('delete')

@@ -7,7 +7,7 @@ import * as path from 'path';
 
 @Injectable()
 export class VendorsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createVendorDto: CreateVendorDto) {
     const data = await this.prisma.vendor.create({
@@ -16,7 +16,7 @@ export class VendorsService {
         alamat: createVendorDto.alamat || '',
         pic: createVendorDto.pic || '',
         no_telp: createVendorDto.no_telp || '',
-        email: createVendorDto.email,
+        email: createVendorDto.email || '',
         website: createVendorDto.website,
         pricelist_pdf: createVendorDto.pricelist_pdf,
       },
@@ -35,22 +35,39 @@ export class VendorsService {
       },
     });
   }
-// ------------------------------------------------------------------
-  async importFromJsonFile(filename: string): Promise<void> {
+  // ------------------------------------------------------------------
+  async importFromJsonFile_pplbi(filename: string): Promise<void> {
     const filePath = path.join(__dirname, '..', '..', filename);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
     for (const item of data) {
-      const createPlatformDto: CreateVendorDto = {
-        nama: item.platform_name,
-        alamat: item.company_address,
-        pic: item.platform_logo,
-        no_telp: item.company_no_telfon,
-        email: item.company_email,
-        website: item.app_url,
+      const createVendorDto: CreateVendorDto = {
+        nama: item["Nama Perusahaan"],
+        alamat: item["Alamat Perusahaan"],
+        pic: "",  // Tidak ada logo dalam JSON baru, bisa disesuaikan jika ada
+        no_telp: item["No-Tlp"],
+        email: item["Email"],
+        website: "",  // Tidak ada website dalam JSON baru, disesuaikan jika ada
       };
-      
-      await this.create(createPlatformDto);
+
+      await this.create(createVendorDto);
+    }
+  }
+  async importFromJsonFile_ilfa(filename: string): Promise<void> {
+    const filePath = path.join(__dirname, '..', '..', filename);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+    for (const item of data) {
+      const createVendorDto: CreateVendorDto = {
+        nama: item.company,
+        alamat: item.address,
+        pic: "",  // Tidak ada logo dalam JSON baru, bisa disesuaikan jika ada
+        no_telp: "",
+        email: "",
+        website: "",  // Tidak ada website dalam JSON baru, disesuaikan jika ada
+      };
+
+      await this.create(createVendorDto);
     }
   }
   async deleteByName(nama: string): Promise<void> {
@@ -73,7 +90,7 @@ export class VendorsService {
 
     console.log(`Deleted ${result.count} vendors`);
   }
-// ----------------------------------------------------------------------
+  // ----------------------------------------------------------------------
   findOne(id: string) {
     return `This action returns a #${id} vendor`;
   }

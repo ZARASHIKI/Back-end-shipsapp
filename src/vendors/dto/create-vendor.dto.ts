@@ -7,7 +7,7 @@ export const CreateVendor = z
     alamat: z.string(),
     pic: z.string(),
     no_telp: z.string(),
-    email: z.string(),
+    email: z.string().optional(),
     website: z.string(),
     pricelist_pdf: z.string().optional(),
   })
